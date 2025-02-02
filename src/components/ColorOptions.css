@@ -1,0 +1,138 @@
+.color-options-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.color-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.color-button {
+  width: 100px;
+  height: 100px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.button-shine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%
+  );
+  transform: rotate(45deg);
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.color-button:not(:disabled):hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.color-button:not(:disabled):hover .button-shine {
+  opacity: 1;
+}
+
+.color-button:not(:disabled):active {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.color-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: scale(0.95);
+  filter: grayscale(30%);
+}
+
+.color-button.wrong {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both,
+             flash 0.5s ease-out;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(3px, 0, 0);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes flash {
+  0%, 100% {
+    box-shadow: 0 8px 16px rgba(255, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 8px 25px rgba(255, 0, 0, 0.4);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .color-options {
+    gap: 20px;
+    padding: 25px;
+  }
+
+  .color-button {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+@media (max-width: 768px) {
+  .color-options {
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .color-button {
+    width: 85px;
+    height: 85px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .color-options {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .color-button {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+  }
+} 
