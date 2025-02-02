@@ -179,14 +179,14 @@ h1 {
 
 .target-section,
 .options-section {
-  background: rgba(255, 255, 255, 0.05);
+  /* background: rgba(255, 255, 255, 0.05); */
   border-radius: 25px;
   padding: 30px;
   height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
 }
 
 @media (max-width: 1024px) {
@@ -334,17 +334,6 @@ h1 {
     width: 150px !important;
     height: 150px !important;
   }
-}
-
-.target-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 25px;
-  height: 350px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .target-color {
