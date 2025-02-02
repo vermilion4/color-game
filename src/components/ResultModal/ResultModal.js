@@ -10,7 +10,7 @@ const ResultModal = ({ isCorrect, isVisible, score }) => {
         <div className="modal-icon">
           {isCorrect ? '🎉' : '😅'}
         </div>
-        <h2>{isCorrect ? 'Correct!' : 'Wrong!'}</h2>
+        <h2 data-testid="gameStatus">{isCorrect ? 'Correct!' : 'Wrong!'}</h2>
         {isCorrect && <p>Current Score: {score}</p>}
         <p>{isCorrect ? 'Great job! Get ready for the next color...' : 'Try again!'}</p>
       </div>
@@ -18,4 +18,4 @@ const ResultModal = ({ isCorrect, isVisible, score }) => {
   );
 };
 
-export default ResultModal; 
+export default ResultModal;

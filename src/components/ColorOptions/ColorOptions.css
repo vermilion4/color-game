@@ -30,30 +30,9 @@
   overflow: hidden;
 }
 
-.button-shine {
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.15) 50%,
-    transparent 100%
-  );
-  transform: rotate(45deg);
-  transition: 0.3s;
-  opacity: 0;
-}
-
-.color-button:not(:disabled):hover {
+.color-button:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-}
-
-.color-button:not(:disabled):hover .button-shine {
-  opacity: 1;
 }
 
 .color-button:not(:disabled):active {
@@ -69,8 +48,7 @@
 }
 
 .color-button.wrong {
-  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both,
-             flash 0.5s ease-out;
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 @keyframes shake {

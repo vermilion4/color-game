@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import ColorBox from './components/ColorBox';
-import ColorOptions from './components/ColorOptions';
-import ResultModal from './components/ResultModal';
+import confetti from 'canvas-confetti';
+import ColorOptions from './components/ColorOptions/ColorOptions';
+import ResultModal from './components/ResultModal/ResultModal';
 import './App.css';
 
 function App() {
@@ -10,78 +10,86 @@ function App() {
   const [score, setScore] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [isCorrectGuess, setIsCorrectGuess] = useState(false);
-  const [showColor, setShowColor] = useState(false);
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [shake, setShake] = useState(false);
-  const [showInstructions, setShowInstructions] = useState(true);
 
-  // Generate a random color in hex format
-  const generateRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  // generate base color
+  const generateBaseColor = () => {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = 30 + Math.floor(Math.random() * 20); // 30-50%
+    const lightness = 45 + Math.floor(Math.random() * 15);  // 45-60%
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
   };
 
-  // Generate new set of colors for the game
-  const generateColors = () => {
+  // Generate similar colors based on the target color
+  const generateSimilarColors = (baseColor) => {
     const colors = [];
-    for (let i = 0; i < 6; i++) {
-      colors.push(generateRandomColor());
+    const [h, s, l] = baseColor.match(/\d+/g).map(Number);
+    
+    // Generate 5 similar colors with subtle variations
+    for (let i = 0; i < 5; i++) {
+      const hueVariation = Math.random() * 15 - 7.5;
+      const saturationVariation = Math.random() * 10 - 5;
+      const lightnessVariation = Math.random() * 10 - 5;
+      
+      const newHue = (h + hueVariation + 360) % 360;
+      const newSaturation = Math.max(20, Math.min(60, s + saturationVariation));
+      const newLightness = Math.max(35, Math.min(70, l + lightnessVariation));
+      
+      colors.push(`hsl(${newHue}, ${newSaturation}%, ${newLightness}%)`);
     }
-    const targetIndex = Math.floor(Math.random() * 6);
-    setTargetColor(colors[targetIndex]);
-    setColorOptions(colors);
-    setShowColor(false);
+    return colors;
+  };
+
+  // generate colors
+  const generateColors = () => {
+    const baseColor = generateBaseColor();
+    const similarColors = generateSimilarColors(baseColor);
+    similarColors.push(baseColor);
+    
+    // Shuffle the colors
+    const shuffled = [...similarColors].sort(() => Math.random() - 0.5);
+    setTargetColor(baseColor);
+    setColorOptions(shuffled);
     setButtonsDisabled(false);
     setShake(false);
-    setShowInstructions(true);
-    setTimeout(() => setShowInstructions(false), 3000);
   };
 
-  // Handle color guess
+  const throwConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  };
+
+  // color guess handler
   const handleColorGuess = (color) => {
     const correct = color === targetColor;
     setButtonsDisabled(true);
     
     if (correct) {
-      setShowColor(true);
-      // Wait for flip animation to show color
+      throwConfetti();
+      
+      // Show modal after confetti
       setTimeout(() => {
         setIsCorrectGuess(true);
         setShowModal(true);
         setScore(prevScore => prevScore + 1);
-      }, 1500);
-
-      // First hide the color (flip back)
+      }, 500);
+      
       setTimeout(() => {
         setShowModal(false);
-        setShowColor(false);
-      }, 3000);
-
-      // Then generate new colors after flip back animation
-      setTimeout(() => {
         generateColors();
-      }, 4200); // 3000 + 1200 (flip animation time)
+      }, 2000);
     } else {
       setShake(true);
       
-      // Wait for shake animation before showing modal
+      // Wait for shake animation to complete before showing modal
       setTimeout(() => {
         setIsCorrectGuess(false);
         setShowModal(true);
-      }, 800);
-      
-      // Add wrong class to the button for shake animation
-      const buttons = document.querySelectorAll('.color-button');
-      buttons.forEach(button => {
-        if (button.style.backgroundColor === color) {
-          button.classList.add('wrong');
-          setTimeout(() => button.classList.remove('wrong'), 500);
-        }
-      });
+      }, 700);
       
       setTimeout(() => {
         setShowModal(false);
@@ -94,7 +102,6 @@ function App() {
   // Start new game
   const handleNewGame = () => {
     setScore(0);
-    setShowColor(false);
     setButtonsDisabled(false);
     generateColors();
   };
@@ -102,6 +109,7 @@ function App() {
   // Initialize game
   useEffect(() => {
     generateColors();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -109,14 +117,16 @@ function App() {
       <div className="game-container">
         <header>
           <div className="header-content">
-            <h1>Color Game</h1>
+            <h1>Color Match</h1>
             <div className="header-controls">
+              {/* score */}
               <div className="score-container">
                 <p className="score-label">Score</p>
                 <p data-testid="score" className="score">
                   {score}
                 </p>
               </div>
+              {/* new game button */}
               <button 
                 data-testid="newGameButton"
                 onClick={handleNewGame}
@@ -128,25 +138,29 @@ function App() {
           </div>
         </header>
 
+        {/* instructions panel */}
         <div className="instructions">
           <p data-testid="gameInstructions" className="instruction-text">
-            <span className="instruction-step">1</span> Look at the mystery card with "?"
+            <span className="instruction-step">1</span> Look at the target color with the label "Match this color"
             <br />
-            <span className="instruction-step">2</span> Click the color you think is hiding behind it
+            <span className="instruction-step">2</span> Find its exact match from the similar color options
             <br />
-            <span className="instruction-step">3</span> Try to get the highest score!
+            <span className="instruction-step">3</span> Train your eye to spot subtle differences!
           </p>
+          <div className="instruction-tip">
+            Tip: Take your time! The colors are very similar.
+          </div>
         </div>
 
         <main className="game-content">
+          {/* target color */}
           <section className="target-section">
-            <ColorBox 
-              color={targetColor} 
-              showColor={showColor} 
-              shake={shake}
-            />
+            <div data-testid="colorBox" className={`target-color ${shake ? 'shake' : ''}`} style={{ backgroundColor: targetColor }}>
+              <span className="target-label">Match this color</span>
+            </div>
           </section>
 
+          {/* 6 color options */}
           <section className="options-section">
             <ColorOptions 
               colors={colorOptions} 
@@ -156,6 +170,7 @@ function App() {
           </section>
         </main>
 
+        {/* result modal - correct or wrong */}
         <ResultModal 
           isCorrect={isCorrectGuess}
           isVisible={showModal}
