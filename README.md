@@ -2,6 +2,8 @@
 
 A challenging color perception game built with React that tests your ability to identify subtle differences between colors.
 
+![Color Game Preview](https://github.com/user-attachments/assets/b10457e1-11e7-46f6-8b4a-4e1b1133d275)
+
 ## Description
 
 Color Match is an engaging web game that challenges players to identify exact color matches among very similar shades. The game helps train your eye (especially important for UI inclined developers/designers) to recognize subtle color variations while providing an enjoyable gaming experience.
@@ -46,4 +48,4 @@ Color Match is an engaging web game that challenges players to identify exact co
 4. Open [http://localhost:3000](http://localhost:3000) to play the game
 
 
-## HAPPY PLAYING!
+# HAPPY PLAYING! #
