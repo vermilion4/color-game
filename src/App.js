@@ -15,28 +15,40 @@ function App() {
 
   // generate base color
   const generateBaseColor = () => {
-    const hue = Math.floor(Math.random() * 360);
-    const saturation = 30 + Math.floor(Math.random() * 20); // 30-50%
-    const lightness = 45 + Math.floor(Math.random() * 15);  // 45-60%
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
   };
 
   // Generate similar colors based on the target color
   const generateSimilarColors = (baseColor) => {
     const colors = [];
-    const [h, s, l] = baseColor.match(/\d+/g).map(Number);
+    // Convert hex to RGB
+    const r = parseInt(baseColor.slice(1,3), 16);
+    const g = parseInt(baseColor.slice(3,5), 16);
+    const b = parseInt(baseColor.slice(5,7), 16);
     
-    // Generate 5 similar colors with subtle variations
+    // Generate 5 similar colors with more noticeable variations
     for (let i = 0; i < 5; i++) {
-      const hueVariation = Math.random() * 15 - 7.5;
-      const saturationVariation = Math.random() * 10 - 5;
-      const lightnessVariation = Math.random() * 10 - 5;
+      const variation = 30;
+      let newR = Math.min(255, Math.max(0, r + Math.floor(Math.random() * variation * 2) - variation));
+      let newG = Math.min(255, Math.max(0, g + Math.floor(Math.random() * variation * 2) - variation));
+      let newB = Math.min(255, Math.max(0, b + Math.floor(Math.random() * variation * 2) - variation));
       
-      const newHue = (h + hueVariation + 360) % 360;
-      const newSaturation = Math.max(20, Math.min(60, s + saturationVariation));
-      const newLightness = Math.max(35, Math.min(70, l + lightnessVariation));
+      // Ensure at least one channel has a minimum difference
+      const minDiff = 20;
+      const channel = Math.floor(Math.random() * 3);
+      if (channel === 0) {
+        newR = Math.min(255, Math.max(0, r + (Math.random() < 0.5 ? -minDiff : minDiff)));
+      } else if (channel === 1) {
+        newG = Math.min(255, Math.max(0, g + (Math.random() < 0.5 ? -minDiff : minDiff)));
+      } else {
+        newB = Math.min(255, Math.max(0, b + (Math.random() < 0.5 ? -minDiff : minDiff)));
+      }
       
-      colors.push(`hsl(${newHue}, ${newSaturation}%, ${newLightness}%)`);
+      const hex = `#${newR.toString(16).padStart(2,'0')}${newG.toString(16).padStart(2,'0')}${newB.toString(16).padStart(2,'0')}`;
+      colors.push(hex);
     }
     return colors;
   };
