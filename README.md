@@ -48,4 +48,4 @@ Color Match is an engaging web game that challenges players to identify exact co
 4. Open [http://localhost:3000](http://localhost:3000) to play the game
 
 
-** HAPPY PLAYING! **
+**HAPPY PLAYING!**
