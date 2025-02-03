@@ -3,7 +3,6 @@ import './ColorOptions.css';
 
 const ColorOptions = ({ colors, onGuess, disabled }) => {
   return (
-    <div className="color-options-container">
       <div className="color-options">
         {colors.map((color, index) => (
           <button
@@ -18,7 +17,6 @@ const ColorOptions = ({ colors, onGuess, disabled }) => {
           </button>
         ))}
       </div>
-    </div>
   );
 };
 

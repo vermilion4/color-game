@@ -93,6 +93,8 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(gameStatus);
+
   return (
     <div className="App">
       <div className="game-container">
@@ -130,10 +132,10 @@ function App() {
         </div>
 
         {/* game status */}
-        <div data-testid="gameStatus" className={`game-status ${gameStatus.toLowerCase().includes('correct') ? 'correct' : 'wrong'}`}>
+        <div data-testid="gameStatus" className={`game-status ${gameStatus ? (gameStatus.toLowerCase().includes('correct') ? 'correct' : 'wrong') : ''}`}>
           {gameStatus}
         </div>
-        
+
         <main className="game-content">
           <section className="target-section">
             <div className="target-wrapper">
