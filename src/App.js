@@ -136,12 +136,11 @@ function App() {
           <p data-testid="gameInstructions" className="instruction-text">
             <span className="instruction-step">1</span> Look at the target color with the label "Match this color"
             <br />
-            <span className="instruction-step">2</span> Find its exact match from the similar color options
+            <span className="instruction-step">2</span> Choose its exact match from the color options
             <br />
-            <span className="instruction-step">3</span> Train your eye to spot subtle differences!
           </p>
           <div className="instruction-tip">
-            Tip: Take your time! The colors are very similar.
+            Tip: Take your time!
           </div>
         </div>
 
