@@ -154,6 +154,22 @@ h1 {
   transform: translateY(1px);
 }
 
+.game-status {
+  font-size: 1.2rem;
+  font-weight: bold;
+  min-height: 30px;
+  animation: fadeIn 0.3s ease-in;
+  text-align: center;
+}
+
+.game-status.correct {
+  color: #4CAF50;
+}
+
+.game-status.wrong {
+  color: #f44336;
+}
+
 .game-content {
   flex: 1;
   display: grid;

@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import ColorOptions from './components/ColorOptions/ColorOptions';
-import ResultModal from './components/ResultModal/ResultModal';
 import './App.css';
 
 function App() {
   const [targetColor, setTargetColor] = useState('');
   const [colorOptions, setColorOptions] = useState([]);
   const [score, setScore] = useState(0);
-  const [showModal, setShowModal] = useState(false);
-  const [isCorrectGuess, setIsCorrectGuess] = useState(false);
+  const [gameStatus, setGameStatus] = useState('');
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [shake, setShake] = useState(false);
 
@@ -63,29 +61,19 @@ function App() {
     
     if (correct) {
       throwConfetti();
-      
-      // Show modal after confetti
-      setTimeout(() => {
-        setIsCorrectGuess(true);
-        setShowModal(true);
-        setScore(prevScore => prevScore + 1);
-      }, 500);
+      setGameStatus('Correct!');
+      setScore(prevScore => prevScore + 1);
       
       setTimeout(() => {
-        setShowModal(false);
+        setGameStatus('');
         generateColors();
       }, 2000);
     } else {
       setShake(true);
-      
-      // Wait for shake animation to complete before showing modal
-      setTimeout(() => {
-        setIsCorrectGuess(false);
-        setShowModal(true);
-      }, 700);
+      setGameStatus('Wrong! Try again');
       
       setTimeout(() => {
-        setShowModal(false);
+        setGameStatus('');
         setButtonsDisabled(false);
         setShake(false);
       }, 2000);
@@ -133,17 +121,29 @@ function App() {
 
         {/* instructions panel */}
         <div className="instructions">
-          <p className="instruction-text" data-testid="gameInstructions">Look at the target color with the label "Match this color" and choose its exact match from the color options</p>
+          <p className="instruction-text" data-testid="gameInstructions">
+            Look at the target color with the label "Match this color" and choose its exact match from the color options
+          </p>
           <div className="instruction-tip">
             Tip: Take your time!
           </div>
         </div>
 
+        {/* game status */}
+        <div data-testid="gameStatus" className={`game-status ${gameStatus.toLowerCase().includes('correct') ? 'correct' : 'wrong'}`}>
+          {gameStatus}
+        </div>
+        
         <main className="game-content">
-          {/* target color */}
           <section className="target-section">
-            <div data-testid="colorBox" className={`target-color ${shake ? 'shake' : ''}`} style={{ backgroundColor: targetColor }}>
-              <span className="target-label">Match this color</span>
+            <div className="target-wrapper">
+              <div 
+                data-testid="colorBox" 
+                className={`target-color ${shake ? 'shake' : ''}`} 
+                style={{ backgroundColor: targetColor }}
+              >
+                <span className="target-label">Match this color</span>
+              </div>
             </div>
           </section>
 
@@ -156,13 +156,6 @@ function App() {
             />
           </section>
         </main>
-
-        {/* result modal - correct or wrong */}
-        <ResultModal 
-          isCorrect={isCorrectGuess}
-          isVisible={showModal}
-          score={score}
-        />
       </div>
     </div>
   );
