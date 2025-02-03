@@ -93,20 +93,6 @@ h1 {
   text-align: left;
 }
 
-.instruction-step {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background: linear-gradient(135deg, #9d71ea 0%, #67a1ff 100%);
-  color: #fff;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 24px;
-  margin-right: 8px;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
 .instruction-tip {
   font-size: 0.9rem;
   color: #9d71ea;
@@ -252,13 +238,6 @@ h1 {
   .instruction-tip {
     font-size: 0.8rem;
     padding: 6px 10px;
-  }
-
-  .instruction-step {
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    font-size: 0.8rem;
   }
 
   .score-container {

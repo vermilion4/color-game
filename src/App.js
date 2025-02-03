@@ -133,12 +133,7 @@ function App() {
 
         {/* instructions panel */}
         <div className="instructions">
-          <p data-testid="gameInstructions" className="instruction-text">
-            <span className="instruction-step">1</span> Look at the target color with the label "Match this color"
-            <br />
-            <span className="instruction-step">2</span> Choose its exact match from the color options
-            <br />
-          </p>
+          <p className="instruction-text" data-testid="gameInstructions">Look at the target color with the label "Match this color" and choose its exact match from the color options</p>
           <div className="instruction-tip">
             Tip: Take your time!
           </div>
